@@ -11,8 +11,12 @@ import com.idat.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService {
-   @Autowired
-	private final UsuarioRepository usuarioRepository = null;
+    private final UsuarioRepository usuarioRepository;
+
+    @Autowired
+    public UsuarioService(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
     
     public Usuario getUsuarioPorNombre(String email) {
         return usuarioRepository.findByEmail(email).orElse(null);
@@ -27,4 +31,7 @@ public class UsuarioService {
         }
     }
     
+    public Usuario getUsuarioPorId(Integer id) {
+        return usuarioRepository.findById(id).orElse(null);
+    }
 }

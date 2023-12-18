@@ -31,6 +31,5 @@ public class PiezaFabricadaRequest {
 	public void setCantidadLineaC(Integer cantidadLineaC) {
 		this.cantidadLineaC = cantidadLineaC;
 	}
-
     
 }
