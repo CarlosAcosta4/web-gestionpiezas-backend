@@ -7,16 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.idat.entity.PiezaFabricada;
-import com.idat.repository.PiezaFabRepository;
+import com.idat.repository.BuscarPiezaFabRepository;
 
 @Service
-public class PiezaFabService {
+public class BuscarPiezaFabService {
 	
 	@Autowired
-    private PiezaFabRepository piezaFabRepository;
+    private BuscarPiezaFabRepository buscarPiezaFabRepository;
 
     public List<PiezaFabricada> buscarPorRangoFechas(LocalDate fechaInicio, LocalDate fechaFin) {
-        // Lógica para buscar las piezas fabricadas por un rango de fechas
-        return piezaFabRepository.findByFechaFabricacionBetween(fechaInicio, fechaFin);
+        return buscarPiezaFabRepository.findByFechaFabricacionBetween(fechaInicio, fechaFin);
     }
 }

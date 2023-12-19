@@ -4,25 +4,7 @@
 <html>
 <head>
     <title>Iniciar sesión</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: #007BFF;
-            background: linear-gradient(to right, #007BFF, #60A5FA);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .card {
-            border-radius: 15px;
-        }
-        .card-header {
-            background: transparent;
-            border: none;
-            margin: 20px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/estilologin.css">
 </head>
 <body>
 <div class="container">
@@ -31,6 +13,7 @@
             <div class="card shadow-lg">
                 <div class="card-header text-center">
                     <h4 class="text-uppercase text-dark">Iniciar sesión</h4>
+                    <img src="${pageContext.request.contextPath}/css/login.jpg" alt="Descripción de la imagen" style="max-width: 300px; height: 300px;margin: 0 auto; display: block;"/>
                 </div>
                 <div class="card-body">
                     <c:if test="${param.invalid != null}">
@@ -61,3 +44,4 @@
 </div>
 </body>
 </html>
+

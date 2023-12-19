@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.idat.entity.Fabrica;
 import com.idat.entity.Usuario;
 import com.idat.repository.UsuarioRepository;
+import com.idat.response.LoginResponse;
 
 @Service
 public class UsuarioService {
@@ -17,7 +18,7 @@ public class UsuarioService {
     }
     
     public Usuario getUsuarioPorEmail(String email) {
-        return usuarioRepository.findByEmail(email).orElse(null);
+        return usuarioRepository.findFirstByEmail(email);
     }
     
     public Fabrica getFabricaPorUsuarioId(Integer id) {
@@ -32,4 +33,6 @@ public class UsuarioService {
     public Usuario getUsuarioPorId(Integer id) {
         return usuarioRepository.findById(id).orElse(null);
     }
+    
+
 }

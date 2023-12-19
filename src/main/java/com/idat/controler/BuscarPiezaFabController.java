@@ -13,15 +13,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.idat.entity.PiezaFabricada;
-import com.idat.service.PiezaFabService;
+import com.idat.service.BuscarPiezaFabService;
 
 
 @Controller
 @RequestMapping("/piezas")
-public class PiezaFabController {
+public class BuscarPiezaFabController {
 
 	@Autowired
-    private PiezaFabService piezaFabService;
+    private BuscarPiezaFabService buscarPiezaFabService;
+	
+
+	@GetMapping("/mostrarMenu")
+    public String mostrarMenu() {
+        return "menu";
+    }
 
     @GetMapping("/buscarPiezas")
     public String buscarPiezasPorFecha(Model model) {
@@ -32,8 +38,11 @@ public class PiezaFabController {
     public String mostrarPiezasPorFecha(@RequestParam("fechaInicio") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate fechaInicio,
                                         @RequestParam("fechaFin") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate fechaFin,
                                         Model model) {
-        List<PiezaFabricada> piezas = piezaFabService.buscarPorRangoFechas(fechaInicio, fechaFin);
+        List<PiezaFabricada> piezas = buscarPiezaFabService.buscarPorRangoFechas(fechaInicio, fechaFin);
         model.addAttribute("piezas", piezas);
         return "mostrarPiezas";
     }
+    
+
+    
 }

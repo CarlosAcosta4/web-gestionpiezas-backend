@@ -1,60 +1,67 @@
 package com.idat.controler;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.idat.entity.Fabrica;
+import com.idat.entity.Linea;
 import com.idat.entity.PiezaFabricada;
-import com.idat.entity.Usuario;
-import com.idat.request.PiezaFabricadaRequest;
-import com.idat.response.PiezaFabricadaResponse;
+import com.idat.service.FabricaService;
 import com.idat.service.LineaService;
 import com.idat.service.PiezaFabricadaService;
-import com.idat.service.UsuarioService;
 
-@RestController
+@Controller
+@RequestMapping("/piezas")
 public class PiezaFabricadaController {
+
     @Autowired
     private PiezaFabricadaService piezaFabricadaService;
+    
     @Autowired
     private LineaService lineaService;
+    
     @Autowired
-    private UsuarioService usuarioService;
+    private FabricaService fabricaService;
 
-    @PostMapping("/piezasFabricadas/{usuarioId}")
-    public ResponseEntity<PiezaFabricadaResponse> guardarPiezaFabricada(@PathVariable Integer usuarioId, @RequestBody PiezaFabricadaRequest request) {
-        PiezaFabricadaResponse response = new PiezaFabricadaResponse();
 
-        if (request.getFechaFabricacion() == null || request.getCantidadLineaA() == null || request.getCantidadLineaB() == null || request.getCantidadLineaC() == null) {
-            response.setMessage("Fallo en guardar piezas: los datos enviados no pueden ser null");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
+    @GetMapping("/registrarPiezas")
+    public String mostrarFormulario(Model model) {
+        model.addAttribute("piezaFabricada", new PiezaFabricada());
+        return "registrarPiezas";
+    }
 
-        Usuario usuario = usuarioService.getUsuarioPorId(usuarioId);
+    @PostMapping("/registrarPiezas")
+    public String guardarPiezas(@RequestParam("fechaFabricacion") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate fechaFabricacion,
+                                @RequestParam("idFabrica") Integer idFabrica,
+                                @RequestParam("idLinea") Integer idLinea,
+                                @RequestParam("cantidad") Integer cantidad,
+                                RedirectAttributes redirectAttributes) {
 
-        if (usuario == null) {
-            response.setMessage("Fallo en guardar piezas: usuario no encontrado");
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
+        // Crear una instancia de PiezaFabricada con los datos del formulario
+        PiezaFabricada piezaFabricada = new PiezaFabricada();
+        piezaFabricada.setFecha_fabricacion(fechaFabricacion);
+        piezaFabricada.setCantidad(cantidad);
 
-        Fabrica fabrica = usuarioService.getFabricaPorUsuarioId(usuario.getId_usuario());
+        Fabrica fabrica = fabricaService.obtenerFabricaPorId(idFabrica);
+        Linea linea = lineaService.getLineaPorId(idLinea);
 
-        PiezaFabricada piezaFabricadaA = new PiezaFabricada();
-        piezaFabricadaA.setFecha_fabricacion(request.getFechaFabricacion());
-        piezaFabricadaA.setCantidad(request.getCantidadLineaA());
-        piezaFabricadaA.setLinea(lineaService.getLineaPorNombre("A"));
-        piezaFabricadaA.setFabrica(fabrica);
-        piezaFabricadaService.guardarPiezaFabricada(piezaFabricadaA);
+        piezaFabricada.setFabrica(fabrica);
+        piezaFabricada.setLinea(linea);
 
-        // Similar for piezaFabricadaB and piezaFabricadaC...
+        // Lógica para guardar la instancia de PiezaFabricada en la base de datos
+        piezaFabricadaService.guardarPiezaFabricada(piezaFabricada);
 
-        response.setMessage("Piezas fabricadas guardadas con éxito");
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        redirectAttributes.addFlashAttribute("successMessage", "¡Piezas fabricadas guardadas con éxito!");
+        return "redirect:/piezas/buscarPiezas";
     }
 }
+

@@ -8,13 +8,10 @@ import com.idat.repository.PiezaFabRepository;
 
 @Service
 public class PiezaFabricadaService {
-    @Autowired
-    private PiezaFabRepository piezaFabricadaRepository;
+	@Autowired
+    private PiezaFabRepository piezaFabRepository;
 
     public PiezaFabricada guardarPiezaFabricada(PiezaFabricada piezaFabricada) {
-        if (piezaFabricada.getFecha_fabricacion() == null || piezaFabricada.getCantidad() == null || piezaFabricada.getLinea() == null) {
-            throw new IllegalArgumentException("Fallo en guardar piezas: los datos enviados no pueden ser null");
-        }
-        return piezaFabricadaRepository.save(piezaFabricada);
+        return piezaFabRepository.save(piezaFabricada);
     }
 }
