@@ -5,9 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Buscar Piezas por Fecha</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
-/* Estilos CSS */
-/* ... Puedes agregar estilos CSS personalizados aquí ... */
+
 </style>
 </head>
 <body>
@@ -34,7 +34,7 @@ function validarFechas() {
         return false; // Evita que se envíe el formulario si las fechas no son válidas
     }
 
-    return true; // Envía el formulario si las fechas son válidas
+    return true; 
 }
 </script>
 
