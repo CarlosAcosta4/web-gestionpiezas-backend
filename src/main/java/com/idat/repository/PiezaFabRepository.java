@@ -10,5 +10,8 @@ import com.idat.entity.PiezaFabricada;
 
 
 public interface PiezaFabRepository extends JpaRepository<PiezaFabricada,Integer>{
+	
+	 List<PiezaFabricada> findByFechaFabricacionBetween(LocalDate fechaInicio, LocalDate fechaFin);
+	 
 }
 

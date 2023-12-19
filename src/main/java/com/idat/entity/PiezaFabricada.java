@@ -26,7 +26,7 @@ public class PiezaFabricada {
     private Integer cantidad;
     
     @DateTimeFormat(pattern="yyyy-MM-dd",iso=ISO.DATE)
-	private LocalDate fecha_fabricacion;
+	private LocalDate fechaFabricacion;
 
     @ManyToOne
     @JoinColumn(name = "id_fabrica")
@@ -40,12 +40,12 @@ public class PiezaFabricada {
 		super();
 	}
 
-	public PiezaFabricada(Integer id_pieza, Integer cantidad, LocalDate fecha_fabricacion, Fabrica fabrica,
+	public PiezaFabricada(Integer id_pieza, Integer cantidad, LocalDate fechaFabricacion, Fabrica fabrica,
 			Linea linea) {
 		super();
 		this.id_pieza = id_pieza;
 		this.cantidad = cantidad;
-		this.fecha_fabricacion = fecha_fabricacion;
+		this.fechaFabricacion = fechaFabricacion;
 		this.fabrica = fabrica;
 		this.linea = linea;
 	}
@@ -67,11 +67,11 @@ public class PiezaFabricada {
 	}
 
 	public LocalDate getFecha_fabricacion() {
-		return fecha_fabricacion;
+		return fechaFabricacion;
 	}
 
 	public void setFecha_fabricacion(LocalDate fecha_fabricacion) {
-		this.fecha_fabricacion = fecha_fabricacion;
+		this.fechaFabricacion = fecha_fabricacion;
 	}
 
 	public Fabrica getFabrica() {
