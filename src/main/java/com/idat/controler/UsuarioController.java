@@ -1,22 +1,44 @@
 package com.idat.controler;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import javax.servlet.http.HttpSession;
 
-import com.idat.entity.Fabrica;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+
 import com.idat.entity.Usuario;
-import com.idat.response.LoginResponse;
 import com.idat.service.UsuarioService;
 
-@RestController
+
+@Controller
 public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @GetMapping("/login")
+    public String login_GET(Model model) {
+        Usuario usuarioModel = new Usuario();
+        model.addAttribute("usuarioL", usuarioModel);
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String login_POST(@ModelAttribute("usuarioL") Usuario usuario, HttpSession session) {
+        Usuario usuarioExistente = usuarioService.getUsuarioPorEmail(usuario.getEmail());
+        if (usuarioExistente == null) {
+            return "redirect:/login?unregistered";
+        } else if (usuarioExistente.getContrasena().equals(usuario.getContrasena())) {
+            session.setAttribute("usuarioIniciado", usuario.getEmail());
+            return "redirect:/piezas/buscarPiezas";
+        }
+        return "redirect:/login?invalid";
+    }
+}
+  	
+  	/*
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody Usuario usuarioLogin) {
         Usuario usuario = usuarioService.getUsuarioPorNombre(usuarioLogin.getEmail());
@@ -30,5 +52,4 @@ public class UsuarioController {
             response.setMessage("No tiene autorización");
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
-    }
-}
+    }*/

@@ -1,7 +1,5 @@
 package com.idat.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +16,7 @@ public class UsuarioService {
         this.usuarioRepository = usuarioRepository;
     }
     
-    public Usuario getUsuarioPorNombre(String email) {
+    public Usuario getUsuarioPorEmail(String email) {
         return usuarioRepository.findByEmail(email).orElse(null);
     }
     
